@@ -13,7 +13,7 @@ The easiest way to get started is using the provided `run.sh` script:
 
 ```bash
 # Clone the repository
-git clone <your-repo-url>
+git clone https://github.com/joycemuthiani/The-Pesapal-Junior-Dev-Challenge-26.git
 cd pesapal-junior-dev-challenge
 
 # Make the script executable (if needed)
@@ -44,7 +44,7 @@ If you prefer to use Docker commands directly:
 
 ```bash
 # Clone the repository
-git clone <your-repo-url>
+git clone https://github.com/joycemuthiani/The-Pesapal-Junior-Dev-Challenge-26.git
 cd pesapal-junior-dev-challenge
 
 # Start everything with one command
@@ -91,7 +91,7 @@ That's it! The application is now running with:
 
 ```bash
 # 1. Clone the repository
-git clone <your-repo-url>
+git clone https://github.com/joycemuthiani/The-Pesapal-Junior-Dev-Challenge-26.git
 cd pesapal-junior-dev-challenge
 
 # 2. Make the script executable (if needed)
@@ -123,7 +123,7 @@ The `run.sh` script automatically:
 
 ```bash
 # 1. Clone the repository
-git clone <your-repo-url>
+git clone https://github.com/joycemuthiani/The-Pesapal-Junior-Dev-Challenge-26.git
 cd pesapal-junior-dev-challenge
 
 # 2. Start with Docker (builds and runs everything)
@@ -588,8 +588,8 @@ docker-compose down -v && docker-compose up --build
 ## 👤 Joyce Muthiani
 
 **Joyce Muthiani**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- Email: your.email@example.com
+- GitHub: [@joycemuthiani](https://github.com/joycemuthiani)
+- Email: joymuithi@gmail.com
 
 
 
