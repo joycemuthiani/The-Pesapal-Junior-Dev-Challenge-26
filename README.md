@@ -582,12 +582,8 @@ docker-compose down -v
 docker-compose down -v && docker-compose up --build
 ```
 
----
 
-
-## 👤 Joyce Muthiani
-
-**Joyce Muthiani**
+Joyce Muthiani
 - GitHub: [@joycemuthiani](https://github.com/joycemuthiani)
 - Email: joymuithi@gmail.com
 
@@ -597,4 +593,3 @@ docker-compose down -v && docker-compose up --build
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![Docker](https://img.shields.io/badge/docker-ready-brightgreen.svg)](https://www.docker.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-# The-Pesapal-Junior-Dev-Challenge-26
