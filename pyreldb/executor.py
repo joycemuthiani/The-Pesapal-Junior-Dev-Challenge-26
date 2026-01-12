@@ -122,7 +122,8 @@ class QueryExecutor:
                 if "." in col:
                     # Extract column name without table prefix for result key
                     col_name = col.split(".", 1)[1]
-                    # Try to get value using full table.column name first, then just column name
+                    # Try to get value using full table.column name first,
+                    # then just column name
                     if col in row.data:
                         value = row.get(col)
                     else:
