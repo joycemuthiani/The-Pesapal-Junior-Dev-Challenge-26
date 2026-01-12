@@ -24,14 +24,11 @@ class Row:
         return self.data.get(key, default)
 
     def to_dict(self) -> dict:
-        return {
-            'row_id': self.row_id,
-            'data': self.data
-        }
+        return {"row_id": self.row_id, "data": self.data}
 
     @classmethod
-    def from_dict(cls, data: dict) -> 'Row':
-        return cls(data['data'], data['row_id'])
+    def from_dict(cls, data: dict) -> "Row":
+        return cls(data["data"], data["row_id"])
 
 
 class Table:
@@ -50,7 +47,7 @@ class Table:
             if col.primary_key or col.unique:
                 self.create_index(col.name)
 
-    def create_index(self, column_name: str, index_type: str = 'btree'):
+    def create_index(self, column_name: str, index_type: str = "btree"):
         """Create an index on a column"""
         if column_name not in self.columns:
             raise ValueError(f"Column '{column_name}' does not exist")
@@ -58,7 +55,7 @@ class Table:
         if column_name in self.indexes:
             return  # Index already exists
 
-        if index_type == 'btree':
+        if index_type == "btree":
             index = BTreeIndex(column_name)
         else:
             index = SimpleIndex(column_name)
@@ -78,7 +75,12 @@ class Table:
                 return col
         return None
 
-    def validate_row(self, data: Dict[str, Any], is_update: bool = False, exclude_row_index: Optional[int] = None) -> tuple[bool, Optional[str]]:
+    def validate_row(
+        self,
+        data: Dict[str, Any],
+        is_update: bool = False,
+        exclude_row_index: Optional[int] = None,
+    ) -> tuple[bool, Optional[str]]:
         """
         Validate a row against table schema and constraints
 
@@ -114,9 +116,16 @@ class Table:
                     existing_rows = self.find_by_column(col_name, value)
                     # Filter out the row being updated
                     if exclude_row_index is not None:
-                        existing_rows = [r for r in existing_rows if self.rows.index(r) != exclude_row_index]
+                        existing_rows = [
+                            r
+                            for r in existing_rows
+                            if self.rows.index(r) != exclude_row_index
+                        ]
                     if existing_rows:
-                        return False, f"Duplicate value for {('PRIMARY KEY' if column.primary_key else 'UNIQUE')} column '{col_name}'"
+                        return (
+                            False,
+                            f"Duplicate value for {('PRIMARY KEY' if column.primary_key else 'UNIQUE')} column '{col_name}'",
+                        )
 
         return True, None
 
@@ -173,14 +182,19 @@ class Table:
 
     def find_by_range(self, column_name: str, start: Any, end: Any) -> List[Row]:
         """Find rows where column value is in range [start, end]"""
-        if column_name in self.indexes and isinstance(self.indexes[column_name], BTreeIndex):
+        if column_name in self.indexes and isinstance(
+            self.indexes[column_name], BTreeIndex
+        ):
             # Use B-tree index for range query
             row_indices = self.indexes[column_name].range_search(start, end)
             return [self.rows[i] for i in row_indices if i < len(self.rows)]
         else:
             # Full table scan
-            return [row for row in self.rows
-                    if row[column_name] is not None and start <= row[column_name] <= end]
+            return [
+                row
+                for row in self.rows
+                if row[column_name] is not None and start <= row[column_name] <= end
+            ]
 
     def update(self, row_index: int, updates: Dict[str, Any]) -> Row:
         """
@@ -207,7 +221,9 @@ class Table:
             new_data[col_name] = self.columns[col_name].convert(value)
 
         # Validate (excluding current row from unique checks)
-        is_valid, error = self.validate_row(new_data, is_update=True, exclude_row_index=row_index)
+        is_valid, error = self.validate_row(
+            new_data, is_update=True, exclude_row_index=row_index
+        )
 
         if not is_valid:
             raise ValueError(f"Validation error: {error}")
@@ -252,28 +268,28 @@ class Table:
     def to_dict(self) -> dict:
         """Serialize table to dictionary"""
         return {
-            'name': self.name,
-            'columns': [col.to_dict() for col in self.columns.values()],
-            'column_order': self.column_order,
-            'rows': [row.to_dict() if row else None for row in self.rows],
-            'indexes': {name: idx.to_dict() for name, idx in self.indexes.items()},
-            'next_row_id': self.next_row_id
+            "name": self.name,
+            "columns": [col.to_dict() for col in self.columns.values()],
+            "column_order": self.column_order,
+            "rows": [row.to_dict() if row else None for row in self.rows],
+            "indexes": {name: idx.to_dict() for name, idx in self.indexes.items()},
+            "next_row_id": self.next_row_id,
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> 'Table':
+    def from_dict(cls, data: dict) -> "Table":
         """Deserialize table from dictionary"""
-        columns = [Column.from_dict(col) for col in data['columns']]
-        table = cls(data['name'], columns)
-        table.column_order = data['column_order']
-        table.next_row_id = data['next_row_id']
+        columns = [Column.from_dict(col) for col in data["columns"]]
+        table = cls(data["name"], columns)
+        table.column_order = data["column_order"]
+        table.next_row_id = data["next_row_id"]
 
         # Restore rows
-        table.rows = [Row.from_dict(row) if row else None for row in data['rows']]
+        table.rows = [Row.from_dict(row) if row else None for row in data["rows"]]
 
         # Restore indexes
-        for name, idx_data in data.get('indexes', {}).items():
-            if 'order' in idx_data:
+        for name, idx_data in data.get("indexes", {}).items():
+            if "order" in idx_data:
                 table.indexes[name] = BTreeIndex.from_dict(idx_data)
             else:
                 table.indexes[name] = SimpleIndex.from_dict(idx_data)
@@ -281,5 +297,6 @@ class Table:
         return table
 
     def __repr__(self) -> str:
-        return f"Table({self.name}, columns={len(self.columns)}, rows={len(self.scan())})"
-
+        return (
+            f"Table({self.name}, columns={len(self.columns)}, rows={len(self.scan())})"
+        )

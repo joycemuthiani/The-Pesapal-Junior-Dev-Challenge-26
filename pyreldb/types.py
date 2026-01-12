@@ -9,6 +9,7 @@ from enum import Enum
 
 class DataType(Enum):
     """Supported data types in the database"""
+
     INT = "INT"
     VARCHAR = "VARCHAR"
     FLOAT = "FLOAT"
@@ -27,7 +28,7 @@ class Column:
         nullable: bool = True,
         primary_key: bool = False,
         unique: bool = False,
-        default: Any = None
+        default: Any = None,
     ):
         self.name = name
         self.data_type = data_type
@@ -61,7 +62,10 @@ class Column:
         # Length validation for VARCHAR
         if self.data_type == DataType.VARCHAR and self.length:
             if len(str(value)) > self.length:
-                return False, f"Value exceeds maximum length {self.length} for column '{self.name}'"
+                return (
+                    False,
+                    f"Value exceeds maximum length {self.length} for column '{self.name}'",
+                )
 
         return True, None
 
@@ -80,14 +84,14 @@ class Column:
             if isinstance(value, bool):
                 return value
             if isinstance(value, str):
-                return value.lower() in ('true', '1', 'yes', 't')
+                return value.lower() in ("true", "1", "yes", "t")
             return bool(value)
         elif self.data_type == DataType.DATETIME:
             if isinstance(value, datetime):
                 return value
             if isinstance(value, str):
                 # Try common datetime formats
-                for fmt in ['%Y-%m-%d %H:%M:%S', '%Y-%m-%d', '%Y-%m-%dT%H:%M:%S']:
+                for fmt in ["%Y-%m-%d %H:%M:%S", "%Y-%m-%d", "%Y-%m-%dT%H:%M:%S"]:
                     try:
                         return datetime.strptime(value, fmt)
                     except ValueError:
@@ -100,26 +104,26 @@ class Column:
     def to_dict(self) -> dict:
         """Serialize column definition to dictionary"""
         return {
-            'name': self.name,
-            'data_type': self.data_type.value,
-            'length': self.length,
-            'nullable': self.nullable,
-            'primary_key': self.primary_key,
-            'unique': self.unique,
-            'default': self.default
+            "name": self.name,
+            "data_type": self.data_type.value,
+            "length": self.length,
+            "nullable": self.nullable,
+            "primary_key": self.primary_key,
+            "unique": self.unique,
+            "default": self.default,
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> 'Column':
+    def from_dict(cls, data: dict) -> "Column":
         """Deserialize column definition from dictionary"""
         return cls(
-            name=data['name'],
-            data_type=DataType(data['data_type']),
-            length=data.get('length'),
-            nullable=data.get('nullable', True),
-            primary_key=data.get('primary_key', False),
-            unique=data.get('unique', False),
-            default=data.get('default')
+            name=data["name"],
+            data_type=DataType(data["data_type"]),
+            length=data.get("length"),
+            nullable=data.get("nullable", True),
+            primary_key=data.get("primary_key", False),
+            unique=data.get("unique", False),
+            default=data.get("default"),
         )
 
     def __repr__(self) -> str:
@@ -137,4 +141,3 @@ class Column:
 
         constraint_str = " " + " ".join(constraints) if constraints else ""
         return f"{self.name} {type_str}{constraint_str}"
-

@@ -12,5 +12,4 @@ from pyreldb.table import Table
 from pyreldb.parser import SQLParser
 from pyreldb.executor import QueryExecutor
 
-__all__ = ['Database', 'Table', 'SQLParser', 'QueryExecutor']
-
+__all__ = ["Database", "Table", "SQLParser", "QueryExecutor"]

@@ -13,7 +13,7 @@ class BTreeNode:
         self.is_leaf = is_leaf
         self.keys: List[Any] = []
         self.values: List[int] = []  # Row indices
-        self.children: List['BTreeNode'] = []
+        self.children: List["BTreeNode"] = []
         self.order = order
 
     def is_full(self) -> bool:
@@ -77,7 +77,9 @@ class BTreeIndex:
         self._range_search_node(self.root, start, end, result)
         return result
 
-    def _range_search_node(self, node: BTreeNode, start: Any, end: Any, result: List[int]):
+    def _range_search_node(
+        self, node: BTreeNode, start: Any, end: Any, result: List[int]
+    ):
         """Recursively search for keys in range"""
         i = 0
         while i < len(node.keys):
@@ -148,18 +150,26 @@ class BTreeIndex:
         mid = order - 1
 
         # Move half of keys to new node
-        new_child.keys = full_child.keys[mid + 1:]
-        new_child.values = full_child.values[mid + 1:]
+        new_child.keys = full_child.keys[mid + 1 :]
+        new_child.values = full_child.values[mid + 1 :]
         full_child.keys = full_child.keys[:mid]
         full_child.values = full_child.values[:mid]
 
         if not full_child.is_leaf:
-            new_child.children = full_child.children[mid + 1:]
-            full_child.children = full_child.children[:mid + 1]
+            new_child.children = full_child.children[mid + 1 :]
+            full_child.children = full_child.children[: mid + 1]
 
         # Insert middle key into parent
-        parent.keys.insert(index, full_child.keys[mid] if mid < len(full_child.keys) else new_child.keys[0])
-        parent.values.insert(index, full_child.values[mid] if mid < len(full_child.values) else new_child.values[0])
+        parent.keys.insert(
+            index,
+            full_child.keys[mid] if mid < len(full_child.keys) else new_child.keys[0],
+        )
+        parent.values.insert(
+            index,
+            full_child.values[mid]
+            if mid < len(full_child.values)
+            else new_child.values[0],
+        )
         parent.children.insert(index + 1, new_child)
 
     def delete(self, key: Any, row_index: int):
@@ -197,10 +207,10 @@ class BTreeIndex:
     def to_dict(self) -> dict:
         """Serialize index to dictionary"""
         return {
-            'column_name': self.column_name,
-            'order': self.order,
-            'size': self.size,
-            'entries': self._collect_entries(self.root)
+            "column_name": self.column_name,
+            "order": self.order,
+            "size": self.size,
+            "entries": self._collect_entries(self.root),
         }
 
     def _collect_entries(self, node: BTreeNode) -> List[Tuple[Any, int]]:
@@ -216,10 +226,10 @@ class BTreeIndex:
         return entries
 
     @classmethod
-    def from_dict(cls, data: dict) -> 'BTreeIndex':
+    def from_dict(cls, data: dict) -> "BTreeIndex":
         """Deserialize index from dictionary"""
-        index = cls(data['column_name'], data['order'])
-        for key, row_index in data['entries']:
+        index = cls(data["column_name"], data["order"])
+        for key, row_index in data["entries"]:
             index.insert(key, row_index)
         return index
 
@@ -260,14 +270,13 @@ class SimpleIndex:
     def to_dict(self) -> dict:
         """Serialize to dictionary"""
         return {
-            'column_name': self.column_name,
-            'index': {str(k): v for k, v in self.index.items()}
+            "column_name": self.column_name,
+            "index": {str(k): v for k, v in self.index.items()},
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> 'SimpleIndex':
+    def from_dict(cls, data: dict) -> "SimpleIndex":
         """Deserialize from dictionary"""
-        index = cls(data['column_name'])
-        index.index = {k: v for k, v in data['index'].items()}
+        index = cls(data["column_name"])
+        index.index = {k: v for k, v in data["index"].items()}
         return index
-

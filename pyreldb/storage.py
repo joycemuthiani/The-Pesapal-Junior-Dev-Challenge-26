@@ -72,14 +72,14 @@ class Database:
     def save(self):
         """Persist database to disk"""
         data = {
-            'name': self.name,
-            'created_at': datetime.now().isoformat(),
-            'tables': {name: table.to_dict() for name, table in self.tables.items()}
+            "name": self.name,
+            "created_at": datetime.now().isoformat(),
+            "tables": {name: table.to_dict() for name, table in self.tables.items()},
         }
 
         # Write to temporary file first, then rename (atomic operation)
-        temp_file = self.db_file.with_suffix('.tmp')
-        with open(temp_file, 'w') as f:
+        temp_file = self.db_file.with_suffix(".tmp")
+        with open(temp_file, "w") as f:
             json.dump(data, f, indent=2, default=str)
 
         temp_file.replace(self.db_file)
@@ -89,13 +89,13 @@ class Database:
         if not self.db_file.exists():
             return
 
-        with open(self.db_file, 'r') as f:
+        with open(self.db_file, "r") as f:
             data = json.load(f)
 
-        self.name = data.get('name', self.name)
+        self.name = data.get("name", self.name)
         self.tables = {}
 
-        for table_name, table_data in data.get('tables', {}).items():
+        for table_name, table_data in data.get("tables", {}).items():
             self.tables[table_name] = Table.from_dict(table_data)
 
     def export_table_csv(self, table_name: str, output_file: str):
@@ -105,7 +105,8 @@ class Database:
             raise ValueError(f"Table '{table_name}' does not exist")
 
         import csv
-        with open(output_file, 'w', newline='') as f:
+
+        with open(output_file, "w", newline="") as f:
             writer = csv.DictWriter(f, fieldnames=table.column_order)
             writer.writeheader()
 
@@ -114,22 +115,17 @@ class Database:
 
     def get_stats(self) -> dict:
         """Get database statistics"""
-        stats = {
-            'name': self.name,
-            'num_tables': len(self.tables),
-            'tables': {}
-        }
+        stats = {"name": self.name, "num_tables": len(self.tables), "tables": {}}
 
         for name, table in self.tables.items():
-            stats['tables'][name] = {
-                'columns': len(table.columns),
-                'rows': len(table.scan()),
-                'indexes': len(table.indexes),
-                'size_kb': len(json.dumps(table.to_dict())) / 1024
+            stats["tables"][name] = {
+                "columns": len(table.columns),
+                "rows": len(table.scan()),
+                "indexes": len(table.indexes),
+                "size_kb": len(json.dumps(table.to_dict())) / 1024,
             }
 
         return stats
 
     def __repr__(self) -> str:
         return f"Database(name={self.name}, tables={len(self.tables)})"
-

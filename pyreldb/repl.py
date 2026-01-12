@@ -32,15 +32,21 @@ class REPL:
 
         for row in result.rows:
             for col in result.columns:
-                value = str(row.get(col, ''))
+                value = str(row.get(col, ""))
                 col_widths[col] = max(col_widths[col], len(value))
 
         # Build table
         lines = []
 
         # Header
-        header = "| " + " | ".join(col.ljust(col_widths[col]) for col in result.columns) + " |"
-        separator = "+" + "+".join("-" * (col_widths[col] + 2) for col in result.columns) + "+"
+        header = (
+            "| "
+            + " | ".join(col.ljust(col_widths[col]) for col in result.columns)
+            + " |"
+        )
+        separator = (
+            "+" + "+".join("-" * (col_widths[col] + 2) for col in result.columns) + "+"
+        )
 
         lines.append(separator)
         lines.append(header)
@@ -48,9 +54,14 @@ class REPL:
 
         # Rows
         for row in result.rows:
-            row_str = "| " + " | ".join(
-                str(row.get(col, '')).ljust(col_widths[col]) for col in result.columns
-            ) + " |"
+            row_str = (
+                "| "
+                + " | ".join(
+                    str(row.get(col, "")).ljust(col_widths[col])
+                    for col in result.columns
+                )
+                + " |"
+            )
             lines.append(row_str)
 
         lines.append(separator)
@@ -66,7 +77,7 @@ class REPL:
             return None
 
         # Meta commands
-        if command.startswith('.'):
+        if command.startswith("."):
             return self._execute_meta_command(command)
 
         # SQL query
@@ -81,16 +92,16 @@ class REPL:
         parts = command.split()
         cmd = parts[0].lower()
 
-        if cmd == '.help':
+        if cmd == ".help":
             return self._show_help()
-        elif cmd == '.tables':
+        elif cmd == ".tables":
             return self._show_tables()
-        elif cmd == '.schema':
+        elif cmd == ".schema":
             table_name = parts[1] if len(parts) > 1 else None
             return self._show_schema(table_name)
-        elif cmd == '.stats':
+        elif cmd == ".stats":
             return self._show_stats()
-        elif cmd == '.exit' or cmd == '.quit':
+        elif cmd == ".exit" or cmd == ".quit":
             self.running = False
             return "Goodbye!"
         else:
@@ -186,11 +197,11 @@ Examples:
         output.append(f"Tables: {stats['num_tables']}")
         output.append("")
 
-        if stats['tables']:
+        if stats["tables"]:
             output.append("Table Statistics:")
             output.append("-" * 60)
 
-            for table_name, table_stats in stats['tables'].items():
+            for table_name, table_stats in stats["tables"].items():
                 output.append(f"\n  {table_name}:")
                 output.append(f"    Columns: {table_stats['columns']}")
                 output.append(f"    Rows: {table_stats['rows']}")
@@ -221,18 +232,18 @@ Examples:
                 buffer.append(line)
 
                 # Check if query is complete (ends with semicolon)
-                if line.strip().endswith(';'):
+                if line.strip().endswith(";"):
                     # Remove semicolon and execute
-                    query = ' '.join(buffer).rstrip(';')
+                    query = " ".join(buffer).rstrip(";")
                     buffer = []
 
                     result = self.execute_command(query)
                     if result:
                         print(result)
                         print()
-                elif line.strip().startswith('.'):
+                elif line.strip().startswith("."):
                     # Meta command
-                    query = ' '.join(buffer)
+                    query = " ".join(buffer)
                     buffer = []
 
                     result = self.execute_command(query)
@@ -262,6 +273,5 @@ def main():
     repl.run()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
-
