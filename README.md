@@ -24,10 +24,10 @@ chmod +x run.sh
 ```
 
 The script will:
-- ✅ Check if Docker and docker-compose are installed
-- ✅ Build and start the application automatically
-- ✅ Wait for the application to be ready
-- ✅ Display helpful information (URLs, commands)
+- Check if Docker and docker-compose are installed
+- Build and start the application automatically
+- Wait for the application to be ready
+- Display helpful information (URLs, commands)
 
 **What you'll see:**
 - Dashboard: http://localhost:8080
@@ -54,10 +54,10 @@ docker-compose up --build
 ```
 
 That's it! The application is now running with:
-- ✅ Backend API
-- ✅ Frontend UI
-- ✅ Database initialized with sample data
-- ✅ All dependencies installed
+- Backend API
+- Frontend UI
+-  Database initialized with sample data
+-  All dependencies installed
 
 **To stop:** Press `Ctrl+C` and run `docker-compose down`
 
@@ -65,15 +65,15 @@ That's it! The application is now running with:
 ## Features
 
 ### Core RDBMS Features
-- ✅ **SQL Parser**: Full tokenization and syntax parsing
-- ✅ **Data Types**: INT, VARCHAR, FLOAT, BOOLEAN, DATETIME
-- ✅ **CRUD Operations**: CREATE, INSERT, SELECT, UPDATE, DELETE
-- ✅ **B-Tree Indexing**: O(log n) search complexity
-- ✅ **Constraints**: Primary keys, unique constraints, NOT NULL
-- ✅ **JOIN Operations**: INNER JOIN and LEFT JOIN
-- ✅ **Query Optimization**: Index-aware execution
-- ✅ **Persistence**: File-based storage with atomic writes
-- ✅ **Interactive REPL**: Command-line database interface
+-  **SQL Parser**: Full tokenization and syntax parsing
+-  **Data Types**: INT, VARCHAR, FLOAT, BOOLEAN, DATETIME
+-  **CRUD Operations**: CREATE, INSERT, SELECT, UPDATE, DELETE
+-  **B-Tree Indexing**: O(log n) search complexity
+-  **Constraints**: Primary keys, unique constraints, NOT NULL
+-  **JOIN Operations**: INNER JOIN and LEFT JOIN
+-  **Query Optimization**: Index-aware execution
+-  **Persistence**: File-based storage with atomic writes
+-  **Interactive REPL**: Command-line database interface
 
 ### Web Application
 - **Payment Management**
